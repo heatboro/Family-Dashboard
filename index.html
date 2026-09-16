@@ -785,7 +785,24 @@
   <footer class="tip">This is a static demo dashboard — check-offs work while you're viewing it, but nothing saves between visits yet.</footer>
 </div>
 
-<script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCUwZqyOZ3FBk-WLe4TjSKpks2fIP9EPCo",
+    authDomain: "home-base-dashboard.firebaseapp.com",
+    projectId: "home-base-dashboard",
+    storageBucket: "home-base-dashboard.firebasestorage.app",
+    messagingSenderId: "1090952502235",
+    appId: "1:1090952502235:web:713d9fab284f3da69825fe"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const checklistRef = doc(db, "dashboard", "shared");
+
+  // ---------- Passcode gate ----------
   const FAMILY_PASSCODE = "1419";
   const lockScreen = document.getElementById('lockScreen');
   const mainFrame = document.getElementById('mainFrame');
@@ -802,13 +819,10 @@
       passcodeInput.focus();
     }
   }
-
   document.getElementById('unlockBtn').addEventListener('click', tryUnlock);
-  passcodeInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') tryUnlock();
-  });
+  passcodeInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
 
-  // Build the week strip (Mon 9/14 - Sun 9/20, 2026)
+  // ---------- Week strip ----------
   const days = [
     {dow:"MON", num:"14"}, {dow:"TUE", num:"15"}, {dow:"WED", num:"16"},
     {dow:"THU", num:"17"}, {dow:"FRI", num:"18"}, {dow:"SAT", num:"19"}, {dow:"SUN", num:"20"}
@@ -821,7 +835,7 @@
     strip.appendChild(el);
   });
 
-  // Tab switching
+  // ---------- Tab switching ----------
   document.querySelectorAll('nav.tabs button').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
@@ -831,28 +845,90 @@
     });
   });
 
-  // Checklist toggle + tap-anywhere-on-row
+  // ---------- Give every checkbox a stable, content-based Firestore key ----------
+  function slug(str){
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  }
+
   document.querySelectorAll('.routine-list li').forEach(li => {
     const cb = li.querySelector('input[type="checkbox"]');
-    li.addEventListener('click', (e) => {
-      if (e.target.tagName.toLowerCase() === 'input') {
-        li.classList.toggle('done', cb.checked);
-        return;
-      }
-      cb.checked = !cb.checked;
-      li.classList.toggle('done', cb.checked);
+    const tabId = li.closest('.tab-content')?.id || 'tab';
+    const daySection = li.closest('.day-section');
+    const dayTitle = daySection?.querySelector('.day-title')?.textContent || '';
+    const label = li.querySelector('label')?.textContent || '';
+    cb.dataset.fbkey = slug(`${tabId}_${dayTitle}_${label}`);
+  });
+
+  document.querySelectorAll('table.check-grid').forEach(table => {
+    const headerCells = Array.from(table.querySelectorAll('tr:first-child th')).map(th => th.textContent.trim());
+    Array.from(table.querySelectorAll('tr')).slice(1).forEach(tr => {
+      const rowLabel = tr.querySelector('.row-label')?.textContent.trim();
+      if (!rowLabel) return;
+      const checkboxes = tr.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((cb, i) => {
+        const colLabel = headerCells[i + 1] || `col${i}`;
+        cb.dataset.fbkey = slug(`heather_${rowLabel}_${colLabel}`);
+      });
     });
   });
 
-  // Reset buttons per kid page
+  // ---------- Apply state coming from Firestore to the page ----------
+  function applyState(data){
+    document.querySelectorAll('input[type="checkbox"][data-fbkey]').forEach(cb => {
+      const val = !!data[cb.dataset.fbkey];
+      cb.checked = val;
+      const li = cb.closest('li');
+      if (li) li.classList.toggle('done', val);
+    });
+  }
+
+  onSnapshot(checklistRef, (snap) => {
+    if (snap.exists()) applyState(snap.data());
+  }, (err) => {
+    console.error('Firestore sync error:', err);
+  });
+
+  async function saveKey(key, value){
+    try {
+      await setDoc(checklistRef, { [key]: value }, { merge: true });
+    } catch (err){
+      console.error('Could not save to Firestore:', err);
+    }
+  }
+
+  // ---------- Checklist toggle + tap-anywhere-on-row (kid pages) ----------
+  document.querySelectorAll('.routine-list li').forEach(li => {
+    const cb = li.querySelector('input[type="checkbox"]');
+    li.addEventListener('click', (e) => {
+      if (e.target.tagName.toLowerCase() !== 'input') {
+        cb.checked = !cb.checked;
+      }
+      li.classList.toggle('done', cb.checked);
+      saveKey(cb.dataset.fbkey, cb.checked);
+    });
+  });
+
+  // ---------- Plain checkbox grid (H tab) ----------
+  document.querySelectorAll('table.check-grid input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', () => saveKey(cb.dataset.fbkey, cb.checked));
+  });
+
+  // ---------- Reset buttons ----------
   document.querySelectorAll('.reset-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const container = document.getElementById(btn.dataset.target);
-      container.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      const updates = {};
+      container.querySelectorAll('input[type="checkbox"][data-fbkey]').forEach(cb => {
         cb.checked = false;
         const li = cb.closest('li');
         if (li) li.classList.remove('done');
+        updates[cb.dataset.fbkey] = false;
       });
+      try {
+        await setDoc(checklistRef, updates, { merge: true });
+      } catch (err){
+        console.error('Could not reset in Firestore:', err);
+      }
     });
   });
 </script>
