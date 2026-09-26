@@ -35,6 +35,22 @@
     --purple: #7C5C8C;
     --purple-soft: #EBE0F0;
     --purple-page: #F8F4FA;
+
+    --rust-page: #FDF3EF;
+  nav.tabs button[data-tab="bucketlist"].active{ border-bottom-color: var(--rust); }
+
+.theme-rust .day-title{ background: var(--rust-soft); color: #6B3226; }
+.theme-rust .routine-list input[type="checkbox"]{ border-color: var(--rust); }
+.theme-rust .routine-list input[type="checkbox"]:checked{ background: var(--rust); border-color: var(--rust); }
+.theme-rust{ background: var(--rust-page); padding: 20px; border-radius: 10px; }
+
+.bucket-title{
+  font-family: "Dancing Script", "Brush Script MT", cursive;
+  font-weight: 700;
+  font-size: 42px;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 18px;
   }
 
   *{ box-sizing: border-box; }
@@ -420,6 +436,7 @@
     <button data-tab="kevin">K</button>
     <button data-tab="charlotte">C</button>
     <button data-tab="heather">H</button>
+    <button data-tab="bucketlist">Bucket List</button>
   </nav>
 
   <!-- ================= OVERVIEW ================= -->
@@ -469,9 +486,9 @@
       <div class="tab-mark mustard"></div>
       <h2>This week's meals</h2>
       <div class="meal-strip" id="mealStrip">
-        <div class="meal-day"><div class="d">Mon 9/21</div><div class="meal">Homemade Pizza</div></div>
-        <div class="meal-day"><div class="d">Tue 9/22</div><div class="meal">Coconut-Pineapple Glazed Cod, Rice, &amp; Cucumber Salad</div></div>
-        <div class="meal-day"><div class="d">Wed 9/23</div><div class="meal">Pork Chops, Mac &amp; Cheese, &amp; Roasted Brocolli</div></div>
+        <div class="meal-day"><div class="d">Mon 9/21</div><div class="meal">BLTs & Veggie Tray</div></div>
+        <div class="meal-day"><div class="d">Tue 9/22</div><div class="meal">Chicken Crust Pizza</div></div>
+        <div class="meal-day"><div class="d">Wed 9/23</div><div class="meal">Spaghetti</div></div>
         <div class="meal-day"><div class="d">Thu 9/24</div><div class="meal">Leftovers</div></div>
         <div class="meal-day"><div class="d">Fri 9/25</div><div class="meal">Emil/Crockpot</div></div>
         <div class="meal-day"><div class="d">Sat 9/26</div><div class="meal"></div></div>
@@ -479,18 +496,12 @@
       </div>
     </div>
 
-    <div class="panel">
+  <div class="panel">
       <div class="tab-mark teal"></div>
       <h2>Weather – Albion, IL</h2>
-     <div class="weather-strip">
-  <div class="wx-day"><div class="d">Mon 9/21</div><div class="icon">⛅</div><div class="hi">78°</div><div class="lo">63°</div><div class="rain">15% rain</div></div>
-  <div class="wx-day"><div class="d">Tue 9/22</div><div class="icon">☀️</div><div class="hi">69°</div><div class="lo">60°</div><div class="rain">10% rain</div></div>
-  <div class="wx-day"><div class="d">Wed 9/23</div><div class="icon">☀️</div><div class="hi">67°</div><div class="lo">60°</div><div class="rain">10% rain</div></div>
-  <div class="wx-day"><div class="d">Thu 9/24</div><div class="icon">☀️</div><div class="hi">68°</div><div class="lo">59°</div><div class="rain">10% rain</div></div>
-  <div class="wx-day"><div class="d">Fri 9/25</div><div class="icon">☀️</div><div class="hi">73°</div><div class="lo">52°</div><div class="rain">10% rain</div></div>
-  <div class="wx-day"><div class="d">Sat 9/26</div><div class="icon">☀️</div><div class="hi">74°</div><div class="lo">52°</div><div class="rain">0% rain</div></div>
-  <div class="wx-day"><div class="d">Sun 9/27</div><div class="icon"></div><div class="hi"></div><div class="lo"></div><div class="rain"></div></div>
-</div>
+      <div class="weather-strip" id="weatherStrip">
+        <div class="wx-day"><div class="d">Loading…</div></div>
+      </div>
     </div>
   </div>
 
@@ -729,35 +740,31 @@
   </div>
 
   <!-- ================= HEATHER ================= -->
-  <div class="tab-content" id="tab-heather">
-    <div class="reset-row"><button class="reset-btn" data-target="tab-heather">Reset checklist</button></div>
-    <div class="theme-pink">
+<div class="tab-content" id="tab-heather">
+  <div class="theme-pink">
 
-      <div class="family-focus">
-        <div class="grid-title">Family Focus</div>
-        <p class="focus-statement">Be faithful in the ordinary.</p>
-        <p class="focus-verse">"Let the favor of the Lord our God be upon us, and establish the work of our hands upon us, yes, establish the work of our hands!"</p>
-        <p class="focus-ref">Psalm 90:17</p>
-      </div>
+    <div class="family-focus">
+      <div class="grid-title">Family Focus</div>
+      <p class="focus-statement">Be faithful in the ordinary.</p>
+      <p class="focus-verse">"Let the favor of the Lord our God be upon us, and establish the work of our hands upon us, yes, establish the work of our hands!"</p>
+      <p class="focus-ref">Psalm 90:17</p>
+    </div>
 
-      <table class="chore-table">
-        <caption>Daily Chores</caption>
-        <tr><td class="day">Monday</td><td>Kitchen</td></tr>
-        <tr><td class="day">Tuesday</td><td>Dining Room, Sweep, &amp; Vacuum</td></tr>
-        <tr><td class="day">Wednesday</td><td>Declutter</td></tr>
-        <tr><td class="day">Thursday</td><td>Kids' Laundry &amp; Outfit Prep</td></tr>
-        <tr><td class="day">Friday</td><td>Bathrooms</td></tr>
-      </table>
+    <table class="chore-table">
+      <caption>Daily Chores</caption>
+      <tr><td class="day">Monday</td><td>Kitchen</td></tr>
+      <tr><td class="day">Tuesday</td><td>Dining Room, Sweep, &amp; Vacuum</td></tr>
+      <tr><td class="day">Wednesday</td><td>Declutter</td></tr>
+      <tr><td class="day">Thursday</td><td>Kids' Laundry &amp; Outfit Prep</td></tr>
+      <tr><td class="day">Friday</td><td>Bathrooms</td></tr>
+    </table>
 
+    <div id="heather-weekly">
+      <div class="reset-row"><button class="reset-btn" data-target="heather-weekly">Reset checklist</button></div>
       <div class="grid-title">Weekly Check-In</div>
       <table class="check-grid">
         <tr>
-          <th></th>
-          <th>Mon</th>
-          <th>Tue</th>
-          <th>Wed</th>
-          <th>Thu</th>
-          <th>Fri</th>
+          <th></th><th>Mon</th><th>Tue</th><th>Wed</th><th>Thu</th><th>Fri</th>
         </tr>
         <tr>
           <td class="row-label">Sort Laundry</td>
@@ -788,13 +795,59 @@
           <td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td>
         </tr>
       </table>
-
     </div>
+
+    <div id="heather-monthly" style="margin-top: 28px;">
+      <div class="reset-row"><button class="reset-btn" data-target="heather-monthly">Reset checklist</button></div>
+      <div class="grid-title">Monthly Reset</div>
+      <ul class="routine-list">
+        <li><label>Windows</label><input type="checkbox"></li>
+        <li><label>Baseboards</label><input type="checkbox"></li>
+        <li><label>Doors</label><input type="checkbox"></li>
+        <li><label>Fridge</label><input type="checkbox"></li>
+        <li><label>Fans</label><input type="checkbox"></li>
+        <li><label>Light Switches</label><input type="checkbox"></li>
+        <li><label>Kitchen Cabinets</label><input type="checkbox"></li>
+      </ul>
+    </div>
+
+    <div id="heather-seasonal" style="margin-top: 28px;">
+      <div class="reset-row"><button class="reset-btn" data-target="heather-seasonal">Reset checklist</button></div>
+      <div class="grid-title">Seasonal Reset</div>
+      <ul class="routine-list">
+        <li><label>H &amp; E Bedding</label><input type="checkbox"></li>
+        <li><label>G Bedding</label><input type="checkbox"></li>
+        <li><label>K Bedding</label><input type="checkbox"></li>
+        <li><label>C Bedding</label><input type="checkbox"></li>
+        <li><label>Pantry</label><input type="checkbox"></li>
+        <li><label>Closet Clean Out</label><input type="checkbox"></li>
+      </ul>
+    </div>
+
   </div>
+</div>
 
   <footer class="tip">Checklists are saved and shared across every device automatically.</footer>
 </div>
-
+<!-- ================= BUCKET LIST ================= -->
+<div class="tab-content" id="tab-bucketlist">
+  <div class="reset-row"><button class="reset-btn" data-target="tab-bucketlist">Reset checklist</button></div>
+  <div class="kid-page theme-rust">
+    <div class="bucket-title">Fall Bucket List</div>
+    <ul class="routine-list">
+      <li><span class="emoji">🎃</span><label>Shreves Pumpkin Patch</label><input type="checkbox"></li>
+      <li><span class="emoji">🏛️</span><label>Lyle's Station</label><input type="checkbox"></li>
+      <li><span class="emoji">👻</span><label>Halloweekend</label><input type="checkbox"></li>
+      <li><span class="emoji">🔥</span><label>Chiminea</label><input type="checkbox"></li>
+      <li><span class="emoji">🎥</span><label>Spooky Movie</label><input type="checkbox"></li>
+      <li><span class="emoji">☕</span><label>Hot Cocoa Game Night</label><input type="checkbox"></li>
+      <li><span class="emoji">🥜</span><label>Payday Mix</label><input type="checkbox"></li>
+      <li><span class="emoji">🍫</span><label>Harvest Puppy Chow</label><input type="checkbox"></li>
+      <li><span class="emoji">🥧</span><label>Pumpkin Pie</label><input type="checkbox"></li>
+    </ul>
+  </div>
+</div>
+  
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
   import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -833,17 +886,95 @@
   passcodeInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') tryUnlock(); });
 
   // ---------- Week strip ----------
-  const days = [
-    {dow:"MON", num:"21"}, {dow:"TUE", num:"22"}, {dow:"WED", num:"23"},
-    {dow:"THU", num:"24"}, {dow:"FRI", num:"25"}, {dow:"SAT", num:"26"}, {dow:"SUN", num:"27"}
-  ];
+  function getWeekRange(){
+    const today = new Date();
+    const dow = today.getDay();
+    const diffToMonday = (dow === 0) ? -6 : (1 - dow);
+    const monday = new Date(today);
+    monday.setDate(today.getDate() + diffToMonday);
+    const week = [];
+    for (let i = 0; i < 7; i++){
+      const d = new Date(monday);
+      d.setDate(monday.getDate() + i);
+      week.push(d);
+    }
+    return week;
+  }
+  const weekDates = getWeekRange();
+  const DOW_LABELS = ["SUN","MON","TUE","WED","THU","FRI","SAT"];
+  const DOW_SHORT = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const MONTH_NAMES = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
   const strip = document.getElementById('weekStrip');
-  days.forEach(d => {
+  weekDates.forEach(d => {
     const el = document.createElement('div');
     el.className = 'day';
-    el.innerHTML = `<div class="dow">${d.dow}</div><div class="num">${d.num}</div>`;
+    el.innerHTML = `<div class="dow">${DOW_LABELS[d.getDay()]}</div><div class="num">${d.getDate()}</div>`;
     strip.appendChild(el);
   });
+
+  const monthLabel = document.getElementById('monthLabel');
+  const firstMonth = weekDates[0].getMonth();
+  const lastMonth = weekDates[6].getMonth();
+  if (firstMonth === lastMonth){
+    monthLabel.textContent = `${MONTH_NAMES[firstMonth]} ${weekDates[0].getFullYear()}`;
+  } else {
+    monthLabel.textContent = `${MONTH_NAMES[firstMonth]} / ${MONTH_NAMES[lastMonth]} ${weekDates[6].getFullYear()}`;
+  }
+
+  function weatherEmoji(code){
+    if (code === 0) return '☀️';
+    if ([1,2].includes(code)) return '⛅';
+    if (code === 3) return '☁️';
+    if ([45,48].includes(code)) return '🌫️';
+    if ([51,53,55,56,57,80,81,82].includes(code)) return '🌦️';
+    if ([61,63,65,66,67].includes(code)) return '🌧️';
+    if ([71,73,75,77,85,86].includes(code)) return '🌨️';
+    if ([95,96,99].includes(code)) return '⛈️';
+    return '⛅';
+  }
+
+  async function loadWeather(){
+    const weatherStrip = document.getElementById('weatherStrip');
+    const fmt = d => d.toISOString().split('T')[0];
+    const startDate = fmt(weekDates[0]);
+    const endDate = fmt(weekDates[6]);
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=38.375&longitude=-88.0553&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&temperature_unit=fahrenheit&timezone=America%2FChicago&start_date=${startDate}&end_date=${endDate}`;
+    try {
+      const res = await fetch(url);
+      const data = await res.json();
+      weatherStrip.innerHTML = '';
+      data.daily.time.forEach((dateStr, i) => {
+        const d = new Date(dateStr + 'T00:00:00');
+        const label = `${DOW_SHORT[d.getDay()]} ${d.getMonth() + 1}/${d.getDate()}`;
+        const hi = Math.round(data.daily.temperature_2m_max[i]);
+        const lo = Math.round(data.daily.temperature_2m_min[i]);
+        const rain = data.daily.precipitation_probability_max[i];
+        const icon = weatherEmoji(data.daily.weathercode[i]);
+        const el = document.createElement('div');
+        el.className = 'wx-day';
+        el.innerHTML = `<div class="d">${label}</div><div class="icon">${icon}</div><div class="hi">${hi}°</div><div class="lo">${lo}°</div><div class="rain">${rain}% rain</div>`;
+        weatherStrip.appendChild(el);
+      });
+    } catch (err){
+      console.error('Could not load weather:', err);
+      weatherStrip.innerHTML = '<div class="wx-day"><div class="d">Weather unavailable</div></div>';
+    }
+  }
+  loadWeather();
+
+  document.querySelectorAll('nav.tabs button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  function slug(str){
+    return str.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+  }
 
   // ---------- Tab switching ----------
   document.querySelectorAll('nav.tabs button').forEach(btn => {
